@@ -18,5 +18,31 @@ class PlacesController < ApplicationController
     @place.save
     redirect_to "/places"
   end
+  
+  def edit
+    @place = Place.find_by({ "id" => params["id"] })
+  end
+
+  def update
+    @place = Place.find_by({ "id" => params["id"] })
+    if User.find_by({ "id" => session["user_id"] }) != nil
+      @place["name"] = params["name"]
+      @place.save
+    else
+      flash["notice"] = "You must be logged in."
+    end
+    redirect_to "/places"
+  end
+  
+  def destroy
+    @place = Place.find_by({ "id" => params["id"] })
+    if User.find_by({ "id" => session["user_id"] }) != nil
+      @place.destroy
+      redirect_to "/places"
+    else
+      flash["notice"] = "You must be logged in."
+      redirect_to "/places"
+    end
+  end
 
 end
