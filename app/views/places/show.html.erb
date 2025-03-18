@@ -1,22 +1,39 @@
-<h1><%= @places["name"] %></h1>
+<div class="container mt-4">
+  <h1 class="text-center"><%= @places["name"] %></h1>
 
-<h2>My Entries</h2>
-<% for entry in @entries %>
-  <h3><%= entry["title"] %></h3>
-  <h4><%= entry["occurred_on"] %></h4>
-  <p><%= entry["description"] %></p>
-<% end %>
+  <h2 class="mt-4">My Entries</h2>
+  <div class="row">
+    <% @entries.each do |entry| %>
+      <div class="col-lg-4 col-md-6 col-sm-12 mb-4">
+        <div class="card h-100">
+          <% if entry.uploaded_image.attached? %>
+            <img src="<%= url_for(entry.uploaded_image) %>" class="card-img-top img-fluid">
+          <% else %>
+            <img src="<%= entry["image"] %>" class="card-img-top img-fluid">
+          <% end %>
 
-<p>
-  <a href="/entries/new?place_id=<%= @places["id"] %>">New Entry</a>
-</p>
+          <div class="card-body">
+            <h3 class="card-title"><%= entry["title"] %></h3>
+            <h4 class="text-muted"><%= entry["occurred_on"] %></h4>
+            <p class="card-text"><%= entry["description"] %></p>
+          </div>
+        </div>
+      </div>
+    <% end %>
+  </div>
 
-<p><a href="/places">Back to All Places</a></p>
+  <p class="mt-3">
+    <a href="/entries/new?place_id=<%= @places["id"] %>" class="btn btn-primary">New Entry</a>
+  </p>
 
- <% User.find_by({ "id" => session["user_id"] }) != nil %>
-  <p><a href="/places/<%= @places["id"] %>/edit">Edit Place</a></p>
+  <p><a href="/places" class="btn btn-secondary">Back to All Places</a></p>
 
-  <form action="/places/<%= @places["id"] %>" method="post">
-    <input type="hidden" name="_method" value="delete">
-    <button>Delete Place</button>
-  </form>
+  <% if User.find_by(id: session["user_id"]) %>
+    <p><a href="/places/<%= @places["id"] %>/edit" class="btn btn-warning">Edit Place</a></p>
+
+    <form action="/places/<%= @places["id"] %>" method="post" class="d-inline">
+      <input type="hidden" name="_method" value="delete">
+      <button class="btn btn-danger">Delete Place</button>
+    </form>
+  <% end %>
+</div>
