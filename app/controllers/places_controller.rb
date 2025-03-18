@@ -10,7 +10,11 @@ class PlacesController < ApplicationController
   end
 
   def new
+    if session["user_id"] == nil
+      redirect_to "/places"
+    else
     @places = Place.find_by({ "id" => params["id"] })
+    end
   end
 
   def create
