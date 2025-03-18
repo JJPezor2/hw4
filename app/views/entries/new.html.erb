@@ -18,8 +18,6 @@
     <input type="date" name="occurred_on" id="occurred_on_input">
   </p>
 
-    <input type="hidden" name="place_id" value="<%= @places["id"] %>" id="place_id_input">
-
   <button>Save</button>
-  <a href="/places/<%= @places["id"] %>">Cancel</a>
+  <a href="/places/<%= @places["place_id"] %>">Cancel</a>
 </form>

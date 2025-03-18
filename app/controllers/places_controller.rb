@@ -6,12 +6,11 @@ class PlacesController < ApplicationController
 
   def show
     @places = Place.find_by({ "id" => params["id"] })
-    @entry = Entry.where({ "place_id" => @place["id"] })
-    @places = Place.where({ "user_id" => @place["id"], "user_id" => session["user_id"] })
+    @entries = Entry.where({ "place_id" => @places["id"], "user_id" => session["user_id"]})
   end
 
   def new
-    @places = Place.find_by({ "id" => params["place_id"] })
+    @places = Place.find_by({ "id" => params["id"] })
   end
 
   def create
@@ -22,7 +21,7 @@ class PlacesController < ApplicationController
   end
   
   def edit
-    @place = Place.find_by({ "id" => params["id"] })
+    @places = Place.find_by({ "id" => params["id"] })
   end
 
   def update
@@ -39,7 +38,7 @@ class PlacesController < ApplicationController
   def destroy
     @places = Place.find_by({ "id" => params["id"] })
     if User.find_by({ "id" => session["user_id"] }) != nil
-      @place.destroy
+      @places.destroy
       redirect_to "/places"
     else
       flash["notice"] = "You must be logged in."
