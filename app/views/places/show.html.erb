@@ -11,6 +11,13 @@
   <a href="/entries/new?place_id=<%= @place["id"] %>">New Entry</a>
 </p>
 
-<p>
-  <a href="/places">Back to All Places</a>
-</p>
+<p><a href="/places">Back to All Places</a></p>
+
+ <% User.find_by({ "id" => session["user_id"] }) != nil %>
+  <p><a href="/places/<%= @places["id"] %>/edit">Edit Place</a></p>
+
+  <form action="/places/<%= @places["id"] %>" method="post">
+    <input type="hidden" name="_method" value="delete">
+    <button>Delete Place</button>
+  </form>
+<% end %>

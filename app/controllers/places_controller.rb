@@ -5,17 +5,19 @@ class PlacesController < ApplicationController
   end
 
   def show
-    @place = Place.find_by({ "id" => params["id"] })
-    @entries = Entry.where({ "place_id" => @place["id"] })
+    @places = Place.find_by({ "id" => params["id"] })
+    @entry = Entry.where({ "place_id" => @place["id"] })
+    @places = Place.where({ "user_id" => @place["id"], "user_id" => session["user_id"] })
   end
 
   def new
+    @places = Place.find_by({ "id" => params["place_id"] })
   end
 
   def create
-    @place = Place.new
-    @place["name"] = params["name"]
-    @place.save
+    @places = Place.new
+    @places["name"] = params["name"]
+    @places.save
     redirect_to "/places"
   end
   
@@ -24,10 +26,10 @@ class PlacesController < ApplicationController
   end
 
   def update
-    @place = Place.find_by({ "id" => params["id"] })
+    @places = Place.find_by({ "id" => params["id"] })
     if User.find_by({ "id" => session["user_id"] }) != nil
-      @place["name"] = params["name"]
-      @place.save
+      @places["name"] = params["name"]
+      @places.save
     else
       flash["notice"] = "You must be logged in."
     end
@@ -35,7 +37,7 @@ class PlacesController < ApplicationController
   end
   
   def destroy
-    @place = Place.find_by({ "id" => params["id"] })
+    @places = Place.find_by({ "id" => params["id"] })
     if User.find_by({ "id" => session["user_id"] }) != nil
       @place.destroy
       redirect_to "/places"

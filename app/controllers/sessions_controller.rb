@@ -12,11 +12,13 @@ class SessionsController < ApplicationController
       else
         flash["notice"] = "Invalid, please try again."
         redirect_to "/login"
-      else
+      end
+    else
         flash["notice"] = "Invalid, please try again."
         redirect_to "/login"
-      end
     end
+  end
+      
 
   def destroy
         flash["notice"] = "Goodbye."
